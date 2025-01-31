@@ -33,14 +33,14 @@ prompt APPLICATION 100 - PMS
 -- Application Export:
 --   Application:     100
 --   Name:            PMS
---   Date and Time:   11:04 Friday January 31, 2025
+--   Date and Time:   12:02 Friday January 31, 2025
 --   Exported By:     SAJIDA
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                      5
+--     Pages:                      6
 --       Items:                    3
 --       Processes:                4
---       Regions:                  5
+--       Regions:                  7
 --       Buttons:                  1
 --     Shared Components:
 --       Logic:
@@ -48,7 +48,7 @@ prompt APPLICATION 100 - PMS
 --       Navigation:
 --         Lists:                  3
 --         Breadcrumbs:            1
---           Entries:              3
+--           Entries:              4
 --       Security:
 --         Authentication:         1
 --         Authorization:          1
@@ -107,7 +107,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'PMS'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>6
-,p_version_scn=>32202709
+,p_version_scn=>32235190
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -228,7 +228,7 @@ wwv_flow_imp_shared.create_list(
 '  start with child_node is null',
 'connect by prior parent_node = child_node'))
 ,p_list_status=>'PUBLIC'
-,p_version_scn=>32202692
+,p_version_scn=>32235190
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(4269833355582482)
@@ -247,6 +247,15 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_icon=>'fa-file-o'
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'6'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(4574840029937860)
+,p_list_item_display_sequence=>30
+,p_list_item_link_text=>'cal'
+,p_list_item_link_target=>'f?p=&APP_ID.:9:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-calendar-o'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'9'
 );
 end;
 /
@@ -1041,6 +1050,12 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_link=>'f?p=&APP_ID.:6:&APP_SESSION.::&DEBUG.:::'
 ,p_page_id=>6
 );
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(4575654415937921)
+,p_short_name=>'cal'
+,p_link=>'f?p=&APP_ID.:9:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>9
+);
 end;
 /
 prompt --application/shared_components/navigation/breadcrumbentry
@@ -1485,6 +1500,58 @@ wwv_flow_imp_page.create_page_plug(
 ,p_menu_id=>wwv_flow_imp.id(1675543144918121)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
 ,p_menu_template_id=>4072363345357175094
+);
+end;
+/
+prompt --application/pages/page_00009
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>9
+,p_name=>'cal'
+,p_alias=>'CAL'
+,p_step_title=>'cal'
+,p_autocomplete_on_off=>'OFF'
+,p_page_template_options=>'#DEFAULT#'
+,p_protection_level=>'C'
+,p_page_component_map=>'08'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(4575257190937915)
+,p_plug_name=>'Breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2531463326621247859
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_menu_id=>wwv_flow_imp.id(1675543144918121)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4072363345357175094
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(4575847513937921)
+,p_plug_name=>'cal'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4072358936313175081
+,p_plug_display_sequence=>10
+,p_query_type=>'SQL'
+,p_plug_source=>'select * from pms.V_FOOD_BEV_REV_DY'
+,p_plug_source_type=>'NATIVE_CSS_CALENDAR'
+,p_plug_query_num_rows=>15
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'additional_calendar_views', 'list:navigation',
+  'calendar_views_and_navigation', 'month:week:day:list:navigation',
+  'display_column', 'BUSINESS_DATE',
+  'drag_and_drop', 'N',
+  'event_sorting', 'AUTOMATIC',
+  'first_hour', '9',
+  'maximum_events_day', '10',
+  'multiple_line_event', 'Y',
+  'show_time', 'N',
+  'show_tooltip', 'Y',
+  'show_weekend', 'Y',
+  'start_date_column', 'BUSINESS_DATE',
+  'time_format', '00')).to_clob
 );
 end;
 /

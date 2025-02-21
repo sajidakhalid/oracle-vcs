@@ -16,17 +16,7 @@ whenever sqlerror exit sql.sqlcode rollback
 -- NOTE: Calls to apex_application_install override the defaults below.
 --
 --------------------------------------------------------------------------------
-begin
-wwv_flow_imp.import_begin (
- p_version_yyyy_mm_dd=>'2024.11.30'
-,p_release=>'24.2.0'
-,p_default_workspace_id=>100001
-,p_default_application_id=>100
-,p_default_id_offset=>0
-,p_default_owner=>'PMS'
-);
-end;
-/
+
  
 prompt APPLICATION 100 - PMS
 --

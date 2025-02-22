@@ -58,6 +58,7 @@ prompt APPLICATION 100 - PMS
 prompt --application/delete_application
 begin
 wwv_flow_imp.remove_flow(wwv_flow.g_flow_id);
+wwv_flow_imp.remove_flow(wwv_flow.g_flow_id);
 end;
 /
 prompt --application/create_application
